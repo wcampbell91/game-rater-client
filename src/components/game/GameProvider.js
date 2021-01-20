@@ -7,6 +7,7 @@ export const GameProvider = props => {
   const [games, setGames ] = useState([])
   const [game, setGame ] = useState({})
   const [cats, setCats] = useState([])
+  const [player, setPlayer] = useState({})
 
   
   const getGames = () => {
@@ -72,6 +73,41 @@ export const GameProvider = props => {
     .then(res => res.json())
   }
 
+  const createRating = (rating) => {
+    fetch(`http://localhost:8000/ratings`, {
+      method: "POST",
+      headers: {
+        "Authorization": `Token ${localStorage.getItem('gr_token')}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(rating)
+    })
+    .then(res => res.json())
+  }
+
+  const getPlayer = id => {
+    fetch(`http://localhost:8000/players/${id}`, {
+      headers: {
+        "Authorization": `Token ${localStorage.getItem('gr_token')}`
+      }
+    })
+    .then(res => res.json())
+    .then(setPlayer)
+  }
+
+  const createActionImage = image => {
+    fetch(`http://localhost:8000/pictures`, {
+      method: "POST",
+      headers: {
+        "Authorization": `Token ${localStorage.getItem('gr_token')}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(image)
+    })
+    .then(res => res.json)
+  }
+
+
   return (
     <GameContext.Provider value={{
     games, 
@@ -84,7 +120,11 @@ export const GameProvider = props => {
     setCats,
     getCategories,
     getReviews,
-    createReview
+    createReview,
+    createRating,
+    getPlayer,
+    player,
+    createActionImage
     }}>
       {props.children}
     </GameContext.Provider>

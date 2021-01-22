@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { GameContext } from './GameProvider'
 
 export const GameList = props => {
-  const { games, getGames, searchGame } = useContext(GameContext)
+  const { games, getGames, searchGame, orderBy } = useContext(GameContext)
   const [ search, setSearch ] = useState('')
 
   useEffect(() => {
@@ -15,11 +15,16 @@ export const GameList = props => {
     setSearch(e.target.value)
   }
 
+  const orderByValue = e => {
+    e.preventDefault();
+    orderBy(e.target.value)
+  }
+
   return (
     <div className="games-container">
       <article className="games">
-        <h1>Games</h1>
-        <div className="search">
+        <h2>Games</h2>
+        <div className="search col-3">
           <label htmlFor="search">Search for a game: </label>
           <input 
             type="text" 
@@ -33,6 +38,14 @@ export const GameList = props => {
           <button className="btn btn-2" type="submit" onClick={e => {
             searchGame(search)
           }}>submit</button>
+        </div>
+        <div>
+          Sort By: 
+          <select className="ml-2" name="orderBy" id="orderBy" onChange={orderByValue}>
+            <option value="">None</option>
+            <option value="year_released">Year Released</option>
+            <option value="designer">Designer</option>
+          </select>
         </div>
         {
           games.map(game => {

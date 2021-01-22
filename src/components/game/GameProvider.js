@@ -117,6 +117,16 @@ export const GameProvider = props => {
   .then(setGames)
   }
 
+  const orderBy = query => {
+    fetch(`http://localhost:8000/games?orderby=${query}`, {
+      headers: {
+        "Authorization": `Token ${localStorage.getItem('gr_token')}`
+      }
+    })
+    .then(res => res.json())
+    .then(setGames)
+  }
+
 
   return (
     <GameContext.Provider value={{
@@ -135,7 +145,8 @@ export const GameProvider = props => {
     getPlayer,
     player,
     createActionImage,
-    searchGame
+    searchGame,
+    orderBy
     }}>
       {props.children}
     </GameContext.Provider>
